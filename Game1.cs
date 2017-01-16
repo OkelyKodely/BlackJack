@@ -678,84 +678,85 @@ public class Game1 : Microsoft.Xna.Framework.Game
         Texture2D rect = new Texture2D(graphics.GraphicsDevice, 90, 600);
 
         Color[] data = new Color[90 * 600];
-        for (int i = 0; i < data.Length; ++i) data[i] = Color.YellowGreen;
+        for (int i = 0; i < data.Length; ++i) data[i] = Color.White;
         rect.SetData(data);
 
         Vector2 coor = new Vector2(0, 0);
+        spriteBatch.Draw(rainbow.GetTexture(), new Rectangle(0, 0, 1160, 600), Color.White);
         spriteBatch.Draw(rect, coor, Color.White);
         spriteBatch.Draw(stayBtn, sizeStayBtn, Color.White);
         spriteBatch.Draw(hitBtn, sizeHitBtn, Color.White);
         spriteBatch.Draw(dealBtn, sizeDealBtn, Color.White);
 
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100, 10), new Vector2(250, 10), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100, 160), new Vector2(250, 160), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100, 10), new Vector2(100, 160), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(250, 10), new Vector2(250, 160), Color.YellowGreen, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100, 10), new Vector2(250, 10), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100, 160), new Vector2(250, 160), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100, 10), new Vector2(100, 160), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(250, 10), new Vector2(250, 160), Color.White, 1);
 
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 151, 10), new Vector2(250 + 151, 10), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 151, 160), new Vector2(250 + 151, 160), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 151, 10), new Vector2(100 + 151, 160), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(250 + 151, 10), new Vector2(250 + 151, 160), Color.YellowGreen, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 151, 10), new Vector2(250 + 151, 10), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 151, 160), new Vector2(250 + 151, 160), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 151, 10), new Vector2(100 + 151, 160), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(250 + 151, 10), new Vector2(250 + 151, 160), Color.White, 1);
 
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 301, 10), new Vector2(250 + 301, 10), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 301, 160), new Vector2(250 + 301, 160), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 301, 10), new Vector2(100 + 301, 160), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(250 + 301, 10), new Vector2(250 + 301, 160), Color.YellowGreen, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 301, 10), new Vector2(250 + 301, 10), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 301, 160), new Vector2(250 + 301, 160), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 301, 10), new Vector2(100 + 301, 160), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(250 + 301, 10), new Vector2(250 + 301, 160), Color.White, 1);
 
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 451, 10), new Vector2(250 + 451, 10), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 451, 160), new Vector2(250 + 451, 160), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 451, 10), new Vector2(100 + 451, 160), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(250 + 451, 10), new Vector2(250 + 451, 160), Color.YellowGreen, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 451, 10), new Vector2(250 + 451, 10), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 451, 160), new Vector2(250 + 451, 160), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 451, 10), new Vector2(100 + 451, 160), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(250 + 451, 10), new Vector2(250 + 451, 160), Color.White, 1);
 
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 601, 10), new Vector2(250 + 601, 10), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 601, 160), new Vector2(250 + 601, 160), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 601, 10), new Vector2(100 + 601, 160), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(250 + 601, 10), new Vector2(250 + 601, 160), Color.YellowGreen, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 601, 10), new Vector2(250 + 601, 10), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 601, 160), new Vector2(250 + 601, 160), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 601, 10), new Vector2(100 + 601, 160), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(250 + 601, 10), new Vector2(250 + 601, 160), Color.White, 1);
 
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 751, 10), new Vector2(250 + 751, 10), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 751, 160), new Vector2(250 + 751, 160), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 751, 10), new Vector2(100 + 751, 160), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(250 + 751, 10), new Vector2(250 + 751, 160), Color.YellowGreen, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 751, 10), new Vector2(250 + 751, 10), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 751, 160), new Vector2(250 + 751, 160), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 751, 10), new Vector2(100 + 751, 160), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(250 + 751, 10), new Vector2(250 + 751, 160), Color.White, 1);
 
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 901, 10), new Vector2(250 + 901, 10), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 901, 160), new Vector2(250 + 901, 160), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 901, 10), new Vector2(100 + 901, 160), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(250 + 901, 10), new Vector2(250 + 901, 160), Color.YellowGreen, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 901, 10), new Vector2(250 + 901, 10), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 901, 160), new Vector2(250 + 901, 160), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 901, 10), new Vector2(100 + 901, 160), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(250 + 901, 10), new Vector2(250 + 901, 160), Color.White, 1);
 
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100, 410), new Vector2(250, 410), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100, 560), new Vector2(250, 560), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100, 410), new Vector2(100, 560), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(250, 410), new Vector2(250, 560), Color.YellowGreen, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100, 410), new Vector2(250, 410), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100, 560), new Vector2(250, 560), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100, 410), new Vector2(100, 560), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(250, 410), new Vector2(250, 560), Color.White, 1);
 
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 151, 410), new Vector2(250 + 151, 410), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 151, 560), new Vector2(250 + 151, 560), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 151, 410), new Vector2(100 + 151, 560), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(250 + 151, 410), new Vector2(250 + 151, 560), Color.YellowGreen, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 151, 410), new Vector2(250 + 151, 410), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 151, 560), new Vector2(250 + 151, 560), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 151, 410), new Vector2(100 + 151, 560), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(250 + 151, 410), new Vector2(250 + 151, 560), Color.White, 1);
 
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 301, 410), new Vector2(250 + 301, 410), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 301, 560), new Vector2(250 + 301, 560), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 301, 410), new Vector2(100 + 301, 560), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(250 + 301, 410), new Vector2(250 + 301, 560), Color.YellowGreen, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 301, 410), new Vector2(250 + 301, 410), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 301, 560), new Vector2(250 + 301, 560), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 301, 410), new Vector2(100 + 301, 560), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(250 + 301, 410), new Vector2(250 + 301, 560), Color.White, 1);
 
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 451, 410), new Vector2(250 + 451, 410), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 451, 560), new Vector2(250 + 451, 560), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 451, 410), new Vector2(100 + 451, 560), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(250 + 451, 410), new Vector2(250 + 451, 560), Color.YellowGreen, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 451, 410), new Vector2(250 + 451, 410), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 451, 560), new Vector2(250 + 451, 560), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 451, 410), new Vector2(100 + 451, 560), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(250 + 451, 410), new Vector2(250 + 451, 560), Color.White, 1);
 
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 601, 410), new Vector2(250 + 601, 410), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 601, 560), new Vector2(250 + 601, 560), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 601, 410), new Vector2(100 + 601, 560), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(250 + 601, 410), new Vector2(250 + 601, 560), Color.YellowGreen, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 601, 410), new Vector2(250 + 601, 410), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 601, 560), new Vector2(250 + 601, 560), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 601, 410), new Vector2(100 + 601, 560), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(250 + 601, 410), new Vector2(250 + 601, 560), Color.White, 1);
 
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 751, 410), new Vector2(250 + 751, 410), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 751, 560), new Vector2(250 + 751, 560), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 751, 410), new Vector2(100 + 751, 560), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(250 + 751, 410), new Vector2(250 + 751, 560), Color.YellowGreen, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 751, 410), new Vector2(250 + 751, 410), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 751, 560), new Vector2(250 + 751, 560), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 751, 410), new Vector2(100 + 751, 560), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(250 + 751, 410), new Vector2(250 + 751, 560), Color.White, 1);
 
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 901, 410), new Vector2(250 + 901, 410), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 901, 560), new Vector2(250 + 901, 560), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 901, 410), new Vector2(100 + 901, 560), Color.YellowGreen, 1);
-        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(250 + 901, 410), new Vector2(250 + 901, 560), Color.YellowGreen, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 901, 410), new Vector2(250 + 901, 410), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 901, 560), new Vector2(250 + 901, 560), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(100 + 901, 410), new Vector2(100 + 901, 560), Color.White, 1);
+        SpriteBatchEx.DrawLine(spriteBatch, new Vector2(250 + 901, 410), new Vector2(250 + 901, 560), Color.White, 1);
 
         int counter = 100;
         int width = 150;
@@ -779,14 +780,14 @@ public class Game1 : Microsoft.Xna.Framework.Game
             cunter += 151;
         }
         spriteBatch.DrawString(spriteFont, "Player:" + playerCardsValue, new Vector2(100, 560), Color.Black);
-        spriteBatch.DrawString(spriteFont, this.Window.Title, new Vector2(440, 240), Color.YellowGreen);
+        spriteBatch.DrawString(spriteFont, this.Window.Title, new Vector2(340, 240), Color.Black);
         spriteBatch.DrawString(spriteFont, "B l a c k  J a c k", new Vector2(440, 280), Color.Black);
-        spriteBatch.DrawString(spriteFont2, "Press [B]", new Vector2(5, 10), Color.White);
-        spriteBatch.DrawString(spriteFont2, "To Raise", new Vector2(5, 50), Color.White);
-        spriteBatch.DrawString(spriteFont2, "Bet", new Vector2(5, 90), Color.White);
-        spriteBatch.DrawString(spriteFont2, "Press [U]", new Vector2(5, 170), Color.White);
-        spriteBatch.DrawString(spriteFont2, "To Lower", new Vector2(5, 210), Color.White);
-        spriteBatch.DrawString(spriteFont2, "Bet", new Vector2(5, 250), Color.White);
+        spriteBatch.DrawString(spriteFont2, "Press [B]", new Vector2(5, 10), Color.Black);
+        spriteBatch.DrawString(spriteFont2, "To Raise", new Vector2(5, 50), Color.Black);
+        spriteBatch.DrawString(spriteFont2, "Bet", new Vector2(5, 90), Color.Black);
+        spriteBatch.DrawString(spriteFont2, "Press [U]", new Vector2(5, 170), Color.Black);
+        spriteBatch.DrawString(spriteFont2, "To Lower", new Vector2(5, 210), Color.Black);
+        spriteBatch.DrawString(spriteFont2, "Bet", new Vector2(5, 250), Color.Black);
         spriteBatch.End();
 
         base.Draw(gameTime);
