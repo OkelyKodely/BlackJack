@@ -10,6 +10,8 @@ using Microsoft.Xna.Framework.Input;
 /// </summary>
 public class Game1 : Microsoft.Xna.Framework.Game
 {
+    String winnerText;
+
     GraphicsDeviceManager graphics;
 
     SpriteFont spriteFont, spriteFont2;
@@ -24,21 +26,25 @@ public class Game1 : Microsoft.Xna.Framework.Game
         
     MouseState _previousMouseState, _currentMouseState;
         
-    Rectangle sizeStayBtn, sizeHitBtn, sizeDealBtn;
+    Rectangle sizeStayBtn, sizeHitBtn, sizeDealBtn, sizeShuffle, sizeS;
         
     DeckOfCards deckOfCards;
         
-    List<Card> house, player;
+    List<Card> house;
+    
+    List<Card> player;
         
     Boolean starting = true;
 
     Boolean dealt = false;
         
     Boolean evaluateReconcile = true;
+    
+    Boolean stay = false;
+    
+    Boolean houseDone = false;
         
-    Boolean stay = false, houseDone = false;
-        
-    GifAnimation.GifAnimation rainbow;
+    GifAnimation.GifAnimation rainbow, shuffle, s;
         
     int houseCardsValue;
         
@@ -46,10 +52,10 @@ public class Game1 : Microsoft.Xna.Framework.Game
         
     int currentCard = -1;
         
-    int totalAmount = 1000;
+    int totalAmount = 975;
         
-    int amount;
-        
+    int amount = 25;
+
     int total;
         
     int placeHouse;
@@ -59,6 +65,8 @@ public class Game1 : Microsoft.Xna.Framework.Game
     int countHouseAces = 0;
 
     int countPlayerAces = 0;
+
+    int elpsed = 0, elpsedlast = 0;
 
     public Game1()
     {
@@ -104,6 +112,12 @@ public class Game1 : Microsoft.Xna.Framework.Game
 
         // TODO: use this.Content to load your game content here
         rainbow = Content.Load<GifAnimation.GifAnimation>("rainbow");
+
+        shuffle = Content.Load<GifAnimation.GifAnimation>("shuffle");
+
+        s = Content.Load<GifAnimation.GifAnimation>("s");
+
+        sizeShuffle = new Rectangle(0, 0, 0, 0);
 
         dealBtn = Content.Load<Texture2D>("deal");
         
@@ -154,13 +168,24 @@ public class Game1 : Microsoft.Xna.Framework.Game
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
             this.Exit();
 
-        sizeDealBtn = new Rectangle(22, 330, 45, 61);
-            
-        sizeHitBtn = new Rectangle(22, 420, 45, 61);
-            
-        sizeStayBtn = new Rectangle(22, 510, 45, 61);
-
         rainbow.Update(gameTime.ElapsedGameTime.Ticks);
+
+        shuffle.Update(gameTime.ElapsedGameTime.Ticks);
+
+        s.Update(gameTime.ElapsedGameTime.Ticks);
+
+        this.elpsed = (int)(gameTime.TotalGameTime.Ticks);
+
+        int interval = this.elpsed - this.elpsedlast;
+
+        if (interval > 57350987 && sizeShuffle.Width != 0)
+        {
+            sizeShuffle = new Rectangle(0, 0, 0, 0);
+
+            sizeS = new Rectangle(0, 0, 0, 0);
+
+            Deal();
+        }
 
         // Before handling input
         _currentKeyboardState = Keyboard.GetState();
@@ -170,39 +195,48 @@ public class Game1 : Microsoft.Xna.Framework.Game
             this.graphics.ToggleFullScreen();
         }
 
-        if (_currentKeyboardState.IsKeyDown(Keys.B) && _previousKeyboardState.IsKeyUp(Keys.B))
+        if (!dealt)
         {
-            this.amount += 150;
-
-            this.totalAmount -= 150;
-
-            if (this.totalAmount < 0)
+            if (_currentKeyboardState.IsKeyDown(Keys.B) && _previousKeyboardState.IsKeyUp(Keys.B))
             {
-                this.totalAmount += 150;
+                if (this.totalAmount > 0)
+                {
+                    this.amount += 25;
 
-                this.amount -= 150;
+                    this.totalAmount -= 25;
+
+                    if (this.totalAmount < 0)
+                    {
+                        this.totalAmount += 25;
+
+                        this.amount -= 25;
+                    }
+
+                    ShowAmountBet(this.amount);
+
+                    ShowTotalAmount(this.totalAmount);
+                }
             }
-
-            ShowAmountBet(this.amount);
-                
-            ShowTotalAmount(this.totalAmount);
-        }
-        else if (_currentKeyboardState.IsKeyDown(Keys.U) && _previousKeyboardState.IsKeyUp(Keys.U))
-        {
-            this.amount -= 150;
-            
-            this.totalAmount += 150;
-
-            if (this.amount < 150)
+            else if (_currentKeyboardState.IsKeyDown(Keys.U) && _previousKeyboardState.IsKeyUp(Keys.U))
             {
-                this.totalAmount -= 150;
+                this.amount -= 25;
 
-                this.amount = 150;
+                if (this.amount >= 0)
+                {
+                    this.totalAmount += 25;
+
+                    if (this.amount < 25)
+                    {
+                        this.totalAmount -= 25;
+
+                        this.amount = 25;
+                    }
+                }
+
+                ShowAmountBet(this.amount);
+
+                ShowTotalAmount(this.totalAmount);
             }
-                
-            ShowAmountBet(this.amount);
-                
-            ShowTotalAmount(this.totalAmount);
         }
 
         // After handling input
@@ -221,8 +255,8 @@ public class Game1 : Microsoft.Xna.Framework.Game
                 
             if (area.Contains(mousePosition) && !dealt)
             {
-                
-                DealWithIt();
+
+                DealWithIt(gameTime.ElapsedGameTime.Ticks);
                 
             }
         }
@@ -253,6 +287,12 @@ public class Game1 : Microsoft.Xna.Framework.Game
 
     private void Play()
     {
+        sizeDealBtn = new Rectangle(22, 330, 45, 61);
+
+        sizeHitBtn = new Rectangle(12, 420, 65, 81);
+
+        sizeStayBtn = new Rectangle(12, 510, 65, 81);
+
         if (_previousMouseState.LeftButton == ButtonState.Released && _currentMouseState.LeftButton == ButtonState.Pressed)
         {
             // Check if the mouse position is inside the rectangle
@@ -262,7 +302,7 @@ public class Game1 : Microsoft.Xna.Framework.Game
                 
             Rectangle area = someRectangle;
                 
-            if (area.Contains(mousePosition))
+            if (area.Contains(mousePosition) && !this.Window.Title.Contains("~"))
             {
                 Hit();
             }
@@ -312,9 +352,40 @@ public class Game1 : Microsoft.Xna.Framework.Game
             }
         }
 
-        if (total < 17)
+        if (total > 16)
         {
-            placeHouse += 150;
+            while (true)
+            {
+                if (this.total > 21)
+                {
+                    if (this.countHouseAces > 0)
+                    {
+                        --this.countHouseAces;
+                        total -= 10;
+                    }
+                    if (this.total < 22)
+                        break;
+                    if (this.countHouseAces == 1 && total > 21)
+                    {
+                        --this.countHouseAces;
+                        total -= 10;
+                        break;
+                    }
+                    if (this.countHouseAces <= 1)
+                        break;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            this.houseDone = false;
+        }
+
+        if (total < 17 || (total > 16 && this.house.Count > 2 && total < this.playerCardsValue && this.playerCardsValue < 22))
+        {
+            placeHouse += 25;
 
             ++currentCard;
         
@@ -345,7 +416,42 @@ public class Game1 : Microsoft.Xna.Framework.Game
             }
         }
 
-        if (total > 16 && total < 22)
+        this.houseCardsValue = total;
+
+        if (total > 16)
+        {
+            while (true)
+            {
+                if (this.houseCardsValue > 21)
+                {
+                    if (this.countHouseAces > 0)
+                    {
+                        --this.countHouseAces;
+                        this.houseCardsValue -= 10;
+                    }
+                    if (this.houseCardsValue < 22)
+                        break;
+                    if (this.countHouseAces == 1 && this.houseCardsValue > 21)
+                    {
+                        --this.countHouseAces;
+                        this.houseCardsValue -= 10;
+                        break;
+                    }
+                    if (this.countHouseAces <= 1)
+                        break;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            this.houseDone = false;
+        }
+
+        total = this.houseCardsValue;
+
+        if (total > 16 && total < 22 && !(this.houseCardsValue > 16 && this.house.Count > 2 && this.houseCardsValue < this.playerCardsValue && this.playerCardsValue < 22))
         {
             this.houseDone = true;
         }
@@ -354,13 +460,14 @@ public class Game1 : Microsoft.Xna.Framework.Game
         {
             this.houseDone = true;
         }
-
-        this.houseCardsValue = total;
     }
 
     private void Hit()
     {
-        placePlayer += 150;
+        if (!dealt)
+            return;
+
+        placePlayer += 25;
 
         ++currentCard;
 
@@ -372,6 +479,8 @@ public class Game1 : Microsoft.Xna.Framework.Game
         player.Add(kard);
 
         this.playerCardsValue = 0;
+
+        this.countPlayerAces = 0;
 
         for (int i = 0; i < player.Count; i++)
         {
@@ -397,6 +506,31 @@ public class Game1 : Microsoft.Xna.Framework.Game
                 this.playerCardsValue -= 3;
             }
         }
+        while (true)
+        {
+            if (this.playerCardsValue > 21)
+            {
+                if (this.countPlayerAces > 0)
+                {
+                    --this.countPlayerAces;
+                    this.playerCardsValue -= 10;
+                }
+                if (this.playerCardsValue < 22)
+                    break;
+                if (this.countPlayerAces == 1 && this.playerCardsValue > 21)
+                {
+                    --this.countPlayerAces;
+                    this.playerCardsValue -= 10;
+                    break;
+                }
+                else if (this.countPlayerAces <= 1)
+                    break;
+            }
+            else
+            {
+                break;
+            }
+        }
         if (this.playerCardsValue > 21)
         {
             this.stay = true;
@@ -413,101 +547,127 @@ public class Game1 : Microsoft.Xna.Framework.Game
 
     private void Reconcile()
     {
-        while (true)
-        {
-            if (this.playerCardsValue > 21)
-            {
-                if (this.countPlayerAces > 0)
-                {
-                    --this.countPlayerAces;
-                    this.playerCardsValue -= 10;
-                }
-                if (this.playerCardsValue < 22)
-                    break;
-                if (this.countPlayerAces <= 1)
-                    break;
-            }
-            else
-            {
-                break;
-            }
-        }
+        sizeDealBtn = new Rectangle(12, 330, 65, 81);
 
-        while (true)
-        {
-            if (this.houseCardsValue > 21)
-            {
-                if (this.countHouseAces > 0)
-                {
-                    --this.countHouseAces;
-                    this.houseCardsValue -= 10;
-                }
-                if (this.houseCardsValue < 22 && this.houseCardsValue > 16)
-                    break;
-                if (this.countHouseAces <= 1)
-                    break;
-            }
-            else
-            {
-                break;
-            }
-        }
+        sizeHitBtn = new Rectangle(22, 420, 45, 61);
+
+        sizeStayBtn = new Rectangle(22, 510, 45, 61);
+
+        //this.houseCardsValue = this.total;
 
         if (this.houseCardsValue > this.playerCardsValue && this.houseCardsValue < 22)
         {
-            this.Window.Title = "Winner is House!";
+            this.winnerText = "Winner is House~";
+
+            if (!this.starting && houseDone)
+            {
+                this.totalAmount -= 25;
+
+                this.amount = 25;
+
+                houseDone = false;
+            }
         }
         else if (this.playerCardsValue > 21 && this.houseCardsValue < 22)
         {
-            this.Window.Title = "Winner is House!";
+            this.winnerText = "Winner is House~";
+
+            if (!this.starting && houseDone)
+            {
+                this.totalAmount -= 25;
+
+                this.amount = 25;
+
+                houseDone = false;
+            }
         }
         else if (this.playerCardsValue > this.houseCardsValue && this.playerCardsValue < 22)
         {
-            this.Window.Title = "Winner is Player!";
+            this.winnerText = "Winner is Player~";
 
             if(this.stay || this.houseDone)
                 this.totalAmount += this.amount + this.amount;
-                
+
+            if(!this.starting && houseDone)
+                this.amount = 25;
+
+            if (!this.starting && houseDone)
+                this.totalAmount -= 25;
+
             this.stay = false;
             
             this.houseDone = false;
-                
-            Console.WriteLine(this.totalAmount);
         }
         else if (this.houseCardsValue > 21 && this.playerCardsValue < 22)
         {
-            this.Window.Title = "Winner is Player!";
+            this.winnerText = "Winner is Player~";
                 
             if (this.stay || this.houseDone)
                 this.totalAmount += this.amount + this.amount;
-                
+
+            if (!this.starting && houseDone)
+                this.amount = 25;
+
+            if (!this.starting && houseDone)
+                this.totalAmount -= 25;
+
             this.stay = false;
             
             this.houseDone = false;
-                
-            Console.WriteLine(this.totalAmount);
         }
         else
         {
             if (this.houseCardsValue == this.playerCardsValue)
             {
-                this.Window.Title = "Push...";
+                this.winnerText = "Push~";
             }
+
+            if (this.stay || this.houseDone)
+                this.totalAmount += this.amount;
+
+            if (!this.starting && houseDone)
+                this.amount = 25;
+
+            if (!this.starting && houseDone)
+                this.totalAmount -= 25;
+
+            this.stay = false;
+
+            this.houseDone = false;
         }
 
-        if (this.starting)
-            
-            this.Window.Title = "TwentyOne";
+        this.ShowAmountBet(this.amount);
 
-        if (this.totalAmount == 0)
+        this.ShowTotalAmount(this.totalAmount);
+
+        this.evaluateReconcile = false;
+
+        if (this.starting)
+        {
+            this.winnerText = "";
+        }
+
+        if (this.totalAmount <= 0 && this.amount <= 0)
                 
             this.totalAmount = 1000;
+
+        if (this.amount == 25 && this.totalAmount == -25)
+        {
+            this.amount = 0;
+
+            this.totalAmount = 0;
+        }
 
         this.dealt = false;
     }
 
-    private void DealWithIt()
+    private void DealWithIt(long elapsed)
     {
+        if (!(this.amount >= 25 && this.totalAmount >= 0))
+        {
+            return;
+        }
+
         this.starting = false;
 
         this.dealt = true;
@@ -526,48 +686,47 @@ public class Game1 : Microsoft.Xna.Framework.Game
 
         this.playerCardsValue = 0;
 
-        Bet();
+        winnerText = "Playing now...";
 
-        Shuffle();
-
-        Deal();
-    }
-
-    private void Bet()
-    {
-        this.amount = 150;
-
-        this.totalAmount -= this.amount;
-
-        if (this.totalAmount < 0)
-        {
-            this.amount = 150;
-
-            this.totalAmount = 850;
-        }
-
-        ShowAmountBet(this.amount);
-
-        ShowTotalAmount(this.totalAmount);
-    }
-
-    private void Shuffle()
-    {
-        DeckOfCards newDeckOfCards;
-
-        newDeckOfCards = new DeckOfCards();
-
-        newDeckOfCards.setCards(FisherYates.Shuffle(this.deckOfCards.getCards()));
-
-        this.deckOfCards = newDeckOfCards;
-    }
-
-    private void Deal()
-    {
         house.Clear();
 
         player.Clear();
 
+        if (this.currentCard < 8)
+        {
+            this.elpsedlast = this.elpsed;
+
+            this.sizeShuffle = new Rectangle(100, 240, 240, 160);
+
+            this.sizeS = new Rectangle(500, 100, 440, 660);
+
+            this.ShuffleIt(elapsed);
+
+            this.currentCard = 8;
+        }
+        else
+        {
+            Deal();
+        }
+    }
+
+    private void ShuffleIt(long elapsed)
+    {
+        //for (int i = 0; i < 6; i++)
+            Shuffle(elapsed);
+    }
+
+    private void Shuffle(long elapsed)
+    {
+        Card[] oldCards = this.deckOfCards.getCards();
+
+        Card[] newCards = FisherYates.Shuffle(oldCards);
+
+        this.deckOfCards.setCards(newCards);
+    }
+
+    private void Deal()
+    {
         Card kard;
         ++currentCard;
         
@@ -654,6 +813,22 @@ public class Game1 : Microsoft.Xna.Framework.Game
                 this.playerCardsValue -= 3;
             }
         }
+
+        if (this.house[0].getRank() == 1 && this.house[1].getRank() == 1)
+        {
+            if (this.houseCardsValue == 22)
+            {
+                this.houseCardsValue = this.houseCardsValue - 10;
+            }
+        }
+
+        if (this.player[0].getRank() == 1 && this.player[1].getRank() == 1)
+        {
+            if (this.playerCardsValue == 22)
+            {
+                this.playerCardsValue = this.playerCardsValue - 10;
+            }
+        }    
     }
 
     private void ShowAmountBet(int amount)
@@ -672,7 +847,7 @@ public class Game1 : Microsoft.Xna.Framework.Game
     /// <param name="gameTime">Provides a snapshot of timing values.</param>
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(Color.Green);
+        GraphicsDevice.Clear(Color.YellowGreen);
 
         spriteBatch.Begin();
         Texture2D rect = new Texture2D(graphics.GraphicsDevice, 90, 600);
@@ -765,13 +940,13 @@ public class Game1 : Microsoft.Xna.Framework.Game
             width = 0;
             this.houseCardsValue = 0;
         }
-        for (int i = 0; i < house.Count; i++)
+        for (int i = 0; i < house.Count && house.Count != 1; i++)
         {
             Texture2D txtr = Content.Load<Texture2D>(house[i].getSuit() + "-" + house[i].getRank());
             spriteBatch.Draw(txtr, new Rectangle(counter, 10, width, 150), Color.White);
             counter += 151;
         }
-        spriteBatch.DrawString(spriteFont, "House:" + houseCardsValue, new Vector2(100, 200), Color.Black);
+        spriteBatch.DrawString(spriteFont, "House:" + houseCardsValue, new Vector2(100, 200), Color.White);
         int cunter = 100;
         for (int i = 0; i < player.Count; i++)
         {
@@ -779,15 +954,18 @@ public class Game1 : Microsoft.Xna.Framework.Game
             spriteBatch.Draw(txtr, new Rectangle(cunter, 410, width, 150), Color.White);
             cunter += 151;
         }
-        spriteBatch.DrawString(spriteFont, "Player:" + playerCardsValue, new Vector2(100, 560), Color.Black);
-        spriteBatch.DrawString(spriteFont, this.Window.Title, new Vector2(340, 240), Color.Black);
-        spriteBatch.DrawString(spriteFont, "B l a c k  J a c k", new Vector2(440, 280), Color.Black);
-        spriteBatch.DrawString(spriteFont2, "Press [B]", new Vector2(5, 10), Color.Black);
-        spriteBatch.DrawString(spriteFont2, "To Raise", new Vector2(5, 50), Color.Black);
-        spriteBatch.DrawString(spriteFont2, "Bet", new Vector2(5, 90), Color.Black);
-        spriteBatch.DrawString(spriteFont2, "Press [U]", new Vector2(5, 170), Color.Black);
-        spriteBatch.DrawString(spriteFont2, "To Lower", new Vector2(5, 210), Color.Black);
-        spriteBatch.DrawString(spriteFont2, "Bet", new Vector2(5, 250), Color.Black);
+        spriteBatch.DrawString(spriteFont, "Player:" + playerCardsValue, new Vector2(100, 560), Color.White);
+        spriteBatch.DrawString(spriteFont, this.winnerText, new Vector2(340, 210), Color.White);
+        spriteBatch.DrawString(spriteFont, this.Window.Title, new Vector2(340, 240), Color.White);
+        spriteBatch.DrawString(spriteFont, "B l a c k  J a c k", new Vector2(440, 280), Color.White);
+        spriteBatch.DrawString(spriteFont2, "Press [B]", new Vector2(5, 10), Color.YellowGreen);
+        spriteBatch.DrawString(spriteFont2, "To Raise", new Vector2(5, 50), Color.YellowGreen);
+        spriteBatch.DrawString(spriteFont2, "Bet", new Vector2(5, 90), Color.YellowGreen);
+        spriteBatch.DrawString(spriteFont2, "Press [U]", new Vector2(5, 170), Color.YellowGreen);
+        spriteBatch.DrawString(spriteFont2, "To Lower", new Vector2(5, 210), Color.YellowGreen);
+        spriteBatch.DrawString(spriteFont2, "Bet", new Vector2(5, 250), Color.YellowGreen);
+        spriteBatch.Draw(shuffle.GetTexture(), sizeShuffle, Color.Wheat);
+        spriteBatch.Draw(s.GetTexture(), sizeS, Color.White);
         spriteBatch.End();
 
         base.Draw(gameTime);
